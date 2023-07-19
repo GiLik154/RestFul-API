@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Main Page</h1>
+
+<form id="employeeInfoForm" method="get">
+  <input type="number" id="infoId" placeholder="직원의 ID" required>
+  <button type="submit" class="btn btn-primary">직원의 정보 출력</button>
+</form>
+
+<form id="employeeHistoryForm" method="get">
+  <input type="number" id="historyId" placeholder="직원의 ID" required>
+  <button type="submit" class="btn btn-primary">직원의 이력 출력</button>
+</form>
+
+<form id="departmentForm" method="get">
+  <input type="number" id="departmentId" placeholder="부서의 ID" required>
+  <button type="submit" class="btn btn-primary">부서 및 위치 조회</button>
+</form>
+
+<form id="updateEmployeeForm" th:action="@{/employee/update}" method="post">
+  <input type="hidden" name="_method" value="PUT"/>
+  <select name="departmentId" required>
+    <option value="" disabled selected>부서 선택</option>
+    <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}"></option>
+  </select>
+  <select name="percent" required>
+    <option value="" disabled selected>급여 인상폭 (%)</option>
+    <option th:each="percentage : ${#numbers.sequence(100, -100)}" th:value="${percentage}" th:text="${percentage}">
+  </select>
+  <button type="submit" class="btn btn-primary">직원의 급여 수정</button>
+</form>
+
+<form id="cityForm" action="/api" method="get">
+  <label for="citySelect">Select a city:</label>
+  <select id="citySelect" name="cityName" onchange="handleCityChange()">
+    <option value="">도시 이름을 선택하세요</option>
+    <option th:each="city : ${T(com.econrich.homework.enums.KoreaCity).values()}" th:text="${city.name}" th:attr="data-nx=${city.gridX}, data-ny=${city.gridY}"></option>
+  </select>
+  <input type="hidden" id="nx" name="nx" />
+  <input type="hidden" id="ny" name="ny" />
+  <button type="submit" class="btn btn-primary">Custom API Info</button>
+</form>
+
+
+<script>
+  function retrieveEmployeeInfo() {
+    let id = document.getElementById('infoId').value;
+    window.location.href = '/employee/info/' + id;
+  }
+
+  function retrieveEmployeeHistoryInfo() {
+    let id = document.getElementById('historyId').value;
+    window.location.href = '/employee/history/' + id;
+  }
+
+  function retrieveDepartmentInfo() {
+    let id = document.getElementById('departmentId').value;
+    window.location.href = '/department/info/' + id;
+  }
+
+  document.getElementById('employeeInfoForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    retrieveEmployeeInfo();
+  });
+
+  document.getElementById('employeeHistoryForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    retrieveEmployeeHistoryInfo();
+  });
+
+  document.getElementById('departmentForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    retrieveDepartmentInfo();
+  });
+
+
+  function handleCityChange() {
+    const citySelect = document.getElementById('citySelect');
+    const selectedCity = citySelect.options[citySelect.selectedIndex];
+    document.getElementById('nx').value = selectedCity.getAttribute('data-nx');
+    document.getElementById('ny').value = selectedCity.getAttribute('data-ny');
+  }
+
+</script>
+</body>
+</html>
