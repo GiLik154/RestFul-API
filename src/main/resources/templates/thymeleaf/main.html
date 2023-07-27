@@ -39,7 +39,7 @@
   <label for="citySelect">Select a city:</label>
   <select id="citySelect" name="cityName" onchange="handleCityChange()">
     <option value="">도시 이름을 선택하세요</option>
-    <option th:each="city : ${T(com.econrich.homework.enums.KoreaCity).values()}" th:text="${city.name}" th:attr="data-nx=${city.gridX}, data-ny=${city.gridY}"></option>
+    <option th:each="city : ${T(com.api.project.enums.KoreaCity).values()}" th:text="${city.name}" th:attr="data-nx=${city.gridX}, data-ny=${city.gridY}"></option>
   </select>
   <input type="hidden" id="nx" name="nx" />
   <input type="hidden" id="ny" name="ny" />
